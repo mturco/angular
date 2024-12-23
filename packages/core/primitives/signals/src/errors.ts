@@ -6,16 +6,20 @@
  * found in the LICENSE file at https://angular.dev/license
  */
 
+import {SignalNode} from './signal';
+
+type ThrowInvalidWriteToSignalErrorFn = (node: SignalNode<unknown>) => never;
+
 function defaultThrowError(): never {
   throw new Error();
 }
 
-let throwInvalidWriteToSignalErrorFn = defaultThrowError;
+let throwInvalidWriteToSignalErrorFn: ThrowInvalidWriteToSignalErrorFn = defaultThrowError;
 
-export function throwInvalidWriteToSignalError() {
-  throwInvalidWriteToSignalErrorFn();
+export function throwInvalidWriteToSignalError(node: SignalNode<unknown>) {
+  throwInvalidWriteToSignalErrorFn(node);
 }
 
-export function setThrowInvalidWriteToSignalError(fn: () => never): void {
+export function setThrowInvalidWriteToSignalError(fn: ThrowInvalidWriteToSignalErrorFn): void {
   throwInvalidWriteToSignalErrorFn = fn;
 }
